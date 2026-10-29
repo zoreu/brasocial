@@ -1,7 +1,7 @@
 # brasocial
 brasocial rede social br pra fugir da censura das redes sociais
 
-# 1 - instale o tampmonkeu no firefox
+# 1 - instale o tampermonkey no firefox
 
 https://addons.mozilla.org/pt-BR/firefox/addon/tampermonkey/
 
