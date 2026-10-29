@@ -1,17 +1,19 @@
 // ==UserScript==
 // @name         BraSocial no Google
 // @namespace    http://tampermonkey.net/
-// @version      1.3
-// @description  Força HTTPS e substitui a página do Google pela BraSocial
+// @version      1.4
+// @description  BraSocial - rede social descentralizada
 // @author       zoreu
 // @match        http://google.com/brasocial*
 // @match        https://google.com/brasocial*
 // @match        http://www.google.com/brasocial*
 // @match        https://www.google.com/brasocial*
+// @updateURL    https://github.com/zoreu/brasocial/raw/refs/heads/main/brasocial.user.js
+// @downloadURL  https://github.com/zoreu/brasocial/raw/refs/heads/main/brasocial.user.js
 // @run-at       document-start
 // @grant        GM_getResourceText
-// @resource     brasocialCSS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-EdyV0dX8.css
-// @resource     brasocialJS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-CLe3gXM7.js
+// @resource     brasocialCSS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-BhRCV6m3.css
+// @resource     brasocialJS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-C_qlFxQJ.js
 // ==/UserScript==
 
 (function() {
