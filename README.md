@@ -11,4 +11,4 @@ https://github.com/zoreu/brasocial/raw/refs/heads/main/brasocial.user.js
 
 # 3 - acesse
 
-google.com/brasocial
+https://google.com/brasocial
