@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         BraSocial no Google
 // @namespace    http://tampermonkey.net/
-// @version      1.2
-// @description  Substitui a página do Google pela BraSocial e força HTTPS
-// @author       Você
+// @version      1.3
+// @description  Força HTTPS e substitui a página do Google pela BraSocial
+// @author       zoreu
 // @match        http://google.com/brasocial*
 // @match        https://google.com/brasocial*
 // @match        http://www.google.com/brasocial*
@@ -17,36 +17,44 @@
 (function() {
     'use strict';
 
-    // ── 1. Força HTTPS antes de qualquer coisa ─────────────────────────
-    // Se a página atual for http, redireciona para a versão https
-    // preservando o caminho e a query string.
+    // ═══════════════════════════════════════════════════════════════
+    //  🔒 FORÇAR HTTP → HTTPS
+    //  Roda primeiro. Se a URL atual for http://, troca para https://
+    //  preservando host, caminho, query e hash, e recarrega.
+    // ═══════════════════════════════════════════════════════════════
     if (location.protocol === 'http:') {
-        location.replace(
-            'https://' + location.host + location.pathname + location.search + location.hash
-        );
-        return; // interrompe a execução; o redirect vai recarregar o script em https
+        const httpsURL =
+            'https://' +
+            location.host +
+            location.pathname +
+            location.search +
+            location.hash;
+
+        // location.replace não deixa entrada no histórico (melhor que href)
+        location.replace(httpsURL);
+        return; // para aqui; o script será reinjetado na versão https
     }
 
-    // ── 2. Para o carregamento da página original do Google ───────────
+    // ═══════════════════════════════════════════════════════════════
+    //  A partir daqui, já estamos em https://
+    // ═══════════════════════════════════════════════════════════════
+
+    // 1. Interrompe o carregamento da página original do Google
     window.stop();
 
-    // ── 3. (Opcional) Altera a URL exibida na barra de endereços ──────
-    // history.replaceState só permite mudar o path/query/hash dentro da
-    // MESMA origem (google.com). Para mudar o domínio seria necessário
-    // um redirect real, o que sairia da página do Google.
-    // Exemplo: exibir "google.com/brasocial" em vez de "google.com/brasocial?foo=bar"
+    // 2. (Opcional) Normaliza a URL exibida na barra de endereços
+    //    Só funciona dentro da mesma origem (google.com). Não troca domínio.
     try {
         history.replaceState(null, '', '/brasocial');
     } catch (e) {
-        // Alguns navegadores/CSP podem bloquear; ignora silenciosamente
-        console.warn('Não foi possível alterar a URL:', e);
+        console.warn('replaceState bloqueado:', e);
     }
 
-    // ── 4. Carrega os assets do GitHub ────────────────────────────────
+    // 3. Recupera CSS e JS do GitHub (definidos em @resource)
     const cssText = GM_getResourceText('brasocialCSS');
     const jsText  = GM_getResourceText('brasocialJS');
 
-    // ── 5. Reescreve o documento com a página BraSocial ──────────────
+    // 4. Reescreve o documento com a página BraSocial
     const html = `
         <!doctype html>
         <html lang="pt-BR">
