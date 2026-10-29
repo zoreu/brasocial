@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         BraSocial no Google
 // @namespace    http://tampermonkey.net/
-// @version      1.1
-// @description  Substitui a página do Google pela BraSocial
+// @version      1.2
+// @description  Substitui a página do Google pela BraSocial e força HTTPS
 // @author       Você
-// @match        https://google.com/brasocial
-// @match        https://www.google.com/brasocial
+// @match        http://google.com/brasocial*
+// @match        https://google.com/brasocial*
+// @match        http://www.google.com/brasocial*
+// @match        https://www.google.com/brasocial*
 // @run-at       document-start
 // @grant        GM_getResourceText
-// @grant        GM_xmlhttpRequest
-// @connect      raw.githubusercontent.com
 // @resource     brasocialCSS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-EdyV0dX8.css
 // @resource     brasocialJS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-CLe3gXM7.js
 // ==/UserScript==
@@ -17,11 +17,36 @@
 (function() {
     'use strict';
 
+    // ── 1. Força HTTPS antes de qualquer coisa ─────────────────────────
+    // Se a página atual for http, redireciona para a versão https
+    // preservando o caminho e a query string.
+    if (location.protocol === 'http:') {
+        location.replace(
+            'https://' + location.host + location.pathname + location.search + location.hash
+        );
+        return; // interrompe a execução; o redirect vai recarregar o script em https
+    }
+
+    // ── 2. Para o carregamento da página original do Google ───────────
     window.stop();
 
-    const cssText = GM_getResourceText('brasocialCSS');
-    const jsText = GM_getResourceText('brasocialJS');
+    // ── 3. (Opcional) Altera a URL exibida na barra de endereços ──────
+    // history.replaceState só permite mudar o path/query/hash dentro da
+    // MESMA origem (google.com). Para mudar o domínio seria necessário
+    // um redirect real, o que sairia da página do Google.
+    // Exemplo: exibir "google.com/brasocial" em vez de "google.com/brasocial?foo=bar"
+    try {
+        history.replaceState(null, '', '/brasocial');
+    } catch (e) {
+        // Alguns navegadores/CSP podem bloquear; ignora silenciosamente
+        console.warn('Não foi possível alterar a URL:', e);
+    }
 
+    // ── 4. Carrega os assets do GitHub ────────────────────────────────
+    const cssText = GM_getResourceText('brasocialCSS');
+    const jsText  = GM_getResourceText('brasocialJS');
+
+    // ── 5. Reescreve o documento com a página BraSocial ──────────────
     const html = `
         <!doctype html>
         <html lang="pt-BR">
