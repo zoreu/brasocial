@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BraSocial no Google
 // @namespace    http://tampermonkey.net/
-// @version      1.4
+// @version      1.5
 // @description  BraSocial - rede social descentralizada
 // @author       zoreu
 // @match        http://google.com/brasocial*
@@ -12,8 +12,8 @@
 // @downloadURL  https://github.com/zoreu/brasocial/raw/refs/heads/main/brasocial.user.js
 // @run-at       document-start
 // @grant        GM_getResourceText
-// @resource     brasocialCSS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-BhRCV6m3.css
-// @resource     brasocialJS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-C_qlFxQJ.js
+// @resource     brasocialCSS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-ChuMDevT.css
+// @resource     brasocialJS https://raw.githubusercontent.com/zoreu/brasocial/main/assets/index-DjF15UNh.js
 // ==/UserScript==
 
 (function() {
